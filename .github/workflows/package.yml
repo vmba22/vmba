@@ -2,6 +2,8 @@ name: Package VPNACIONAL V10
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 permissions:
   contents: read
@@ -10,6 +12,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Validate PHP
+        run: |
+          find package -name '*.php' -print0 | xargs -0 -n1 php -l
       - name: Build ZIP
         run: |
           cd package
