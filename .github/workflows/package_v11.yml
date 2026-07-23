@@ -1,0 +1,32 @@
+name: Package VPNACIONAL Expediente 360 V11
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Assemble package
+        run: |
+          rm -rf staging_v11
+          mkdir -p staging_v11/includes
+          cp -R v11/. staging_v11/
+          cp package/actividad_asistencia.php staging_v11/actividad_asistencia.php
+          cp package/includes/expediente360_helpers.php staging_v11/includes/expediente360_helpers.php
+      - name: Validate PHP
+        run: |
+          find staging_v11 -name '*.php' -print0 | xargs -0 -n1 php -l
+      - name: Validate JavaScript
+        run: node --check staging_v11/assets/js/expediente360_v11.js
+      - name: Build ZIP
+        run: |
+          cd staging_v11
+          zip -r ../VPNACIONAL_EXPEDIENTE360_EXISTENTE_V11_2026-07-23.zip . -x '*.DS_Store'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: VPNACIONAL_EXPEDIENTE360_EXISTENTE_V11_2026-07-23
+          path: VPNACIONAL_EXPEDIENTE360_EXISTENTE_V11_2026-07-23.zip
+          retention-days: 7
