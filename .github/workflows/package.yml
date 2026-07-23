@@ -1,0 +1,21 @@
+name: Package VPNACIONAL V10
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build ZIP
+        run: |
+          cd package
+          zip -r ../VPNACIONAL_EXPEDIENTE360_ASISTENTES_V10_2026-07-23.zip . -x '*.DS_Store'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: VPNACIONAL_EXPEDIENTE360_ASISTENTES_V10_2026-07-23
+          path: VPNACIONAL_EXPEDIENTE360_ASISTENTES_V10_2026-07-23.zip
+          retention-days: 7
