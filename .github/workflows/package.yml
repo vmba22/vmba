@@ -1,4 +1,4 @@
-name: Package VPNACIONAL V10
+name: Package VPNACIONAL V11
 on:
   push:
     branches: [main]
@@ -14,13 +14,16 @@ jobs:
       - uses: actions/checkout@v4
       - name: Validate PHP
         run: |
-          find package -name '*.php' -print0 | xargs -0 -n1 php -l
+          find package_v11 -name '*.php' -print0 | xargs -0 -n1 php -l
+      - name: Validate JavaScript syntax
+        run: |
+          node --check package_v11/assets/js/expediente360_v11.js
       - name: Build ZIP
         run: |
-          cd package
-          zip -r ../VPNACIONAL_EXPEDIENTE360_ASISTENTES_V10_2026-07-23.zip . -x '*.DS_Store'
+          cd package_v11
+          zip -r ../VPNACIONAL_EXPEDIENTE360_EXISTENTE_V11_2026-07-23.zip . -x '*.DS_Store'
       - uses: actions/upload-artifact@v4
         with:
-          name: VPNACIONAL_EXPEDIENTE360_ASISTENTES_V10_2026-07-23
-          path: VPNACIONAL_EXPEDIENTE360_ASISTENTES_V10_2026-07-23.zip
+          name: VPNACIONAL_EXPEDIENTE360_EXISTENTE_V11_2026-07-23
+          path: VPNACIONAL_EXPEDIENTE360_EXISTENTE_V11_2026-07-23.zip
           retention-days: 7
